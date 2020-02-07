@@ -28,25 +28,24 @@ class CARLADataset(MonoDataset):
                            [                0,                 0,              0, 1]], dtype=np.float32)
         self.full_res_shape = (self.width, self.height)
 
-    # I don't think this function needs to be defined again (I will maybe for now ignore depth points)
-    # def check_depth(self):
-    #     return
-
-    # FIXME
     def get_image_path(self, folder, frame_index, side):
-        f_str = "{:010d}{}".format(frame_index, self.img_ext)
-        image_path = os.path.join(
-            self.data_path, folder, "image_0{}/data".format(self.side_map[side]), f_str)
+        # folder is actually pointing to the FRAME name
+        image_path = os.path.join(self.data_path, 'imgs_all', folder + ".jpg")
         return image_path
 
     def get_color(self, folder, frame_index, side, do_flip):
         color = self.loader(self.get_image_path(folder, frame_index, side))
         return color
 
-    # FIXME
-    # def get_depth(self, folder, frame_index, side, do_flip):
-    #     pass  # np.load
-    #     return
+    # TODO Might need to be implemented later (return depth np array?)
+    def get_depth(self, folder, frame_index, side, do_flip):
+        pass  # np.load depth array
+        return True
+
+    # TODO I don't think this function needs to be implemented (I will maybe for now ignore depth points)
+    def check_depth(self):
+        pass
+        return True
 
 
 class KITTIDataset(MonoDataset):

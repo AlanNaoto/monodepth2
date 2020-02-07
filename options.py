@@ -30,7 +30,7 @@ class MonodepthOptions:
         self.parser.add_argument("--model_name",
                                  type=str,
                                  help="the name of the folder to save the model in",
-                                 default="mdp")
+                                 default="weights")
         self.parser.add_argument("--split",
                                  type=str,
                                  help="which training split to use",
@@ -114,6 +114,9 @@ class MonodepthOptions:
         self.parser.add_argument("--predictive_mask",
                                  help="if set, uses a predictive masking scheme as in Zhou et al",
                                  action="store_true")
+        # SSIM = structural similarity https://www.cns.nyu.edu/pub/lcv/wang03-preprint.pdf
+        # index used to try to estimate the structure of objects in a image by eliminating the influence of LOCAL
+        # illumination and contrast
         self.parser.add_argument("--no_ssim",
                                  help="if set, disables ssim in the loss",
                                  action="store_true")

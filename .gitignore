@@ -3,6 +3,8 @@ __pycache__
 *_disp.jpg
 *_disp.npy
 *.npz
+*.jpg
+*.npy
 kitti_data
 models
 naoto-depth-tests

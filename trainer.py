@@ -8,6 +8,8 @@ from __future__ import absolute_import, division, print_function
 
 import numpy as np
 import time
+import os
+import sys
 
 import torch
 import torch.nn.functional as F
@@ -21,9 +23,8 @@ from utils import *
 from kitti_utils import *
 from layers import *
 
-import datasets
+from kitti_dataset import KITTIRAWDataset, KITTIOdomDataset, CARLADataset
 import networks
-from IPython import embed
 
 
 class Trainer:
@@ -51,6 +52,7 @@ class Trainer:
         if self.opt.use_stereo:
             self.opt.frame_ids.append("s")
 
+        # Network initialization
         self.models["encoder"] = networks.ResnetEncoder(
             self.opt.num_layers, self.opt.weights_init == "pretrained")
         self.models["encoder"].to(self.device)
@@ -111,19 +113,18 @@ class Trainer:
         print("Training is using:\n  ", self.device)
 
         # data
-        datasets_dict = {"kitti": datasets.KITTIRAWDataset,
-                         "kitti_odom": datasets.KITTIOdomDataset}
+        datasets_dict = {"kitti": KITTIRAWDataset,
+                         "kitti_odom": KITTIOdomDataset,
+                         "carla": CARLADataset}
         self.dataset = datasets_dict[self.opt.dataset]
-
-        fpath = os.path.join(os.path.dirname(__file__), "splits", self.opt.split, "{}_files.txt")
-
-        train_filenames = readlines(fpath.format("train"))
-        val_filenames = readlines(fpath.format("val"))
-        img_ext = '.png' if self.opt.png else '.jpg'
+        train_filenames = readlines(os.path.join('splits', 'carla', 'train_files.txt'))
+        val_filenames = readlines(os.path.join('splits', 'carla', 'val_files.txt'))
+        img_ext = '.jpg'
 
         num_train_samples = len(train_filenames)
         self.num_total_steps = num_train_samples // self.opt.batch_size * self.opt.num_epochs
 
+        # Train and validation splits (Default is KITTIRAWDataset)
         train_dataset = self.dataset(
             self.opt.data_path, train_filenames, self.opt.height, self.opt.width,
             self.opt.frame_ids, 4, is_train=True, img_ext=img_ext)
@@ -146,6 +147,7 @@ class Trainer:
             self.ssim = SSIM()
             self.ssim.to(self.device)
 
+        # Multi-scale estimation
         self.backproject_depth = {}
         self.project_3d = {}
         for scale in self.opt.scales:
@@ -161,7 +163,8 @@ class Trainer:
         self.depth_metric_names = [
             "de/abs_rel", "de/sq_rel", "de/rms", "de/log_rms", "da/a1", "da/a2", "da/a3"]
 
-        print("Using split:\n  ", self.opt.split)
+        #print("Using split:\n  ", self.opt.split)
+        print("Using naoto's custom split")
         print("There are {:d} training items and {:d} validation items\n".format(
             len(train_dataset), len(val_dataset)))
 
@@ -199,11 +202,9 @@ class Trainer:
         self.set_train()
 
         for batch_idx, inputs in enumerate(self.train_loader):
-
             before_op_time = time.time()
 
             outputs, losses = self.process_batch(inputs)
-
             self.model_optimizer.zero_grad()
             losses["loss"].backward()
             self.model_optimizer.step()
@@ -482,7 +483,7 @@ class Trainer:
                     idxs > identity_reprojection_loss.shape[1] - 1).float()
 
             loss += to_optimise.mean()
-
+            # Here are probably the predicted depth maps
             mean_disp = disp.mean(2, True).mean(3, True)
             norm_disp = disp / (mean_disp + 1e-7)
             smooth_loss = get_smooth_loss(norm_disp, color)
