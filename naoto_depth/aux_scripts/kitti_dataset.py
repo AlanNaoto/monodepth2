@@ -15,20 +15,51 @@ from ...kitti_utils import generate_depth_map
 from .mono_dataset import MonoDataset
 
 
+class CARLADataset(MonoDataset):
+    def __init__(self, *args, **kwargs):
+        super(CARLADataset, self).__init__(*args, **kwargs)
+        # Maybe the width/height dimensions should be normalized?
+        fov = 90  # Degrees
+        focal = self.width / (2.0 * np.tan(fov * np.pi / 360.0))
+        # K = camera intrinsics parameters
+        self.K = np.array([[focal/self.width,                  0,   self.width/2, 0],
+                           [                0, focal/self.height,  self.height/2, 0],
+                           [                0,                 0,              1, 0],
+                           [                0,                 0,              0, 1]], dtype=np.float32)
+        self.full_res_shape = (self.width, self.height)
+
+    # I don't think this function needs to be defined again (I will maybe for now ignore depth points)
+    # def check_depth(self):
+    #     return
+
+    # FIXME
+    def get_image_path(self, folder, frame_index, side):
+        f_str = "{:010d}{}".format(frame_index, self.img_ext)
+        image_path = os.path.join(
+            self.data_path, folder, "image_0{}/data".format(self.side_map[side]), f_str)
+        return image_path
+
+    def get_color(self, folder, frame_index, side, do_flip):
+        color = self.loader(self.get_image_path(folder, frame_index, side))
+        return color
+
+
 class KITTIDataset(MonoDataset):
     """Superclass for different types of KITTI dataset loaders
     """
     def __init__(self, *args, **kwargs):
         super(KITTIDataset, self).__init__(*args, **kwargs)
-
-        self.K = np.array([[0.58, 0, 0.5, 0],
-                           [0, 1.92, 0.5, 0],
-                           [0, 0, 1, 0],
-                           [0, 0, 0, 1]], dtype=np.float32)
+        # K = camera intrinsics parameters
+        self.K = np.array([[0.58,    0, 0.5, 0],
+                           [   0, 1.92, 0.5, 0],
+                           [   0,    0,   1, 0],
+                           [   0,    0,   0, 1]], dtype=np.float32)
 
         self.full_res_shape = (1242, 375)
+        # This side map is being used only to help access the images filename path
         self.side_map = {"2": 2, "3": 3, "l": 2, "r": 3}
 
+    # I don't think this function needs to be defined again (I will maybe for now ignore depth points)
     def check_depth(self):
         line = self.filenames[0].split()
         scene_name = line[0]
@@ -43,10 +74,8 @@ class KITTIDataset(MonoDataset):
 
     def get_color(self, folder, frame_index, side, do_flip):
         color = self.loader(self.get_image_path(folder, frame_index, side))
-
         if do_flip:
             color = color.transpose(pil.FLIP_LEFT_RIGHT)
-
         return color
 
 

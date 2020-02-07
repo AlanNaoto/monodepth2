@@ -30,7 +30,7 @@ class MonodepthOptions:
         self.parser.add_argument("--model_name",
                                  type=str,
                                  help="the name of the folder to save the model in",
-                                 default="mdp")
+                                 default="weights")
         self.parser.add_argument("--split",
                                  type=str,
                                  help="which training split to use",
@@ -49,12 +49,10 @@ class MonodepthOptions:
         self.parser.add_argument("--png",
                                  help="if set, trains from raw KITTI png files (instead of jpgs)",
                                  action="store_true")
-        # TODO Adjust height
         self.parser.add_argument("--height",
                                  type=int,
                                  help="input image height",
                                  default=192)
-        # TODO Adjust width
         self.parser.add_argument("--width",
                                  type=int,
                                  help="input image width",

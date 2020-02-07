@@ -22,9 +22,8 @@ from ...utils import *
 from ...kitti_utils import *
 from ...layers import *
 
-from aux_scripts.kitti_dataset import KITTIRAWDataset, KITTIOdomDataset
+from aux_scripts.kitti_dataset import KITTIRAWDataset, KITTIOdomDataset, CARLADataset
 from ... import networks
-from IPython import embed
 
 
 class Trainer:
@@ -114,20 +113,18 @@ class Trainer:
 
         # data
         datasets_dict = {"kitti": KITTIRAWDataset,
-                         "kitti_odom": KITTIOdomDataset}
+                         "kitti_odom": KITTIOdomDataset,
+                         "carla": CARLADataset}
         self.dataset = datasets_dict[self.opt.dataset]
-
-        # TODO Change here path to TXT files with names of TRAIN and VAL images
-        fpath = os.path.join(os.path.dirname(__file__), "splits", self.opt.split, "{}_files.txt")
-        train_filenames = readlines(fpath.format("train"))
-        val_filenames = readlines(fpath.format("val"))
-        img_ext = '.png' if self.opt.png else '.jpg'
-        # TODO End of filename input
+        train_filenames = readlines('train_files.txt')
+        val_filenames = readlines('val_files.txt')
+        #img_ext = '.png' if self.opt.png else '.jpg'
+        img_ext = '.jpeg'
 
         num_train_samples = len(train_filenames)
         self.num_total_steps = num_train_samples // self.opt.batch_size * self.opt.num_epochs
 
-        # Train and validation splits
+        # Train and validation splits (Default is KITTIRAWDataset)
         train_dataset = self.dataset(
             self.opt.data_path, train_filenames, self.opt.height, self.opt.width,
             self.opt.frame_ids, 4, is_train=True, img_ext=img_ext)
@@ -166,7 +163,8 @@ class Trainer:
         self.depth_metric_names = [
             "de/abs_rel", "de/sq_rel", "de/rms", "de/log_rms", "da/a1", "da/a2", "da/a3"]
 
-        print("Using split:\n  ", self.opt.split)
+        #print("Using split:\n  ", self.opt.split)
+        print("Using naoto's custom split")
         print("There are {:d} training items and {:d} validation items\n".format(
             len(train_dataset), len(val_dataset)))
 

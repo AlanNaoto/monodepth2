@@ -6,3 +6,4 @@ __pycache__
 kitti_data
 models
 naoto-depth-tests
+naoto_depth/dataset
