@@ -11,8 +11,8 @@ import skimage.transform
 import numpy as np
 import PIL.Image as pil
 
-from ...kitti_utils import generate_depth_map
-from .mono_dataset import MonoDataset
+from kitti_utils import generate_depth_map
+from mono_dataset import MonoDataset
 
 
 class CARLADataset(MonoDataset):
@@ -42,6 +42,11 @@ class CARLADataset(MonoDataset):
     def get_color(self, folder, frame_index, side, do_flip):
         color = self.loader(self.get_image_path(folder, frame_index, side))
         return color
+
+    # FIXME
+    # def get_depth(self, folder, frame_index, side, do_flip):
+    #     pass  # np.load
+    #     return
 
 
 class KITTIDataset(MonoDataset):

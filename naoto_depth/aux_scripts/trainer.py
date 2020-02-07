@@ -9,6 +9,7 @@ from __future__ import absolute_import, division, print_function
 import numpy as np
 import time
 import os
+import sys
 
 import torch
 import torch.nn.functional as F
@@ -18,12 +19,15 @@ from tensorboardX import SummaryWriter
 
 import json
 
-from ...utils import *
-from ...kitti_utils import *
-from ...layers import *
+import naoto
+sys.path.append(naoto.MONODEPTH2_ROOT)
+
+from utils import *
+from kitti_utils import *
+from layers import *
 
 from aux_scripts.kitti_dataset import KITTIRAWDataset, KITTIOdomDataset, CARLADataset
-from ... import networks
+import networks
 
 
 class Trainer:
@@ -118,8 +122,7 @@ class Trainer:
         self.dataset = datasets_dict[self.opt.dataset]
         train_filenames = readlines('train_files.txt')
         val_filenames = readlines('val_files.txt')
-        #img_ext = '.png' if self.opt.png else '.jpg'
-        img_ext = '.jpeg'
+        img_ext = '.jpg'
 
         num_train_samples = len(train_filenames)
         self.num_total_steps = num_train_samples // self.opt.batch_size * self.opt.num_epochs

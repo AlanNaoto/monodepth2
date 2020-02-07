@@ -23,8 +23,8 @@ aux_scripts
         - [ok] Change dataset reference
     kitti_dataset.py
         class KITTIDataset(MonoDataset)
-            - Change camera K intrinsic matrix to the corresponding dataset
-            - Adjust resolution shape
+            - [ok? might be error source later :(] Change camera K intrinsic matrix to the corresponding dataset
+            - [ok] Adjust resolution shape
             - [+- ok, left as is] Check if depth data needs to be set  
 '''
 
@@ -42,7 +42,7 @@ if __name__ == "__main__":
     opts = options.parse()
     # Path to save results and logs
     opts.load_weights_folder = ""  # If from scratch, leave empty
-    opts.data_path = "/mnt/6EFE2115FE20D75D/Naoto/UFPR/Mestrado/9_Code/monodepth2/naoto_depth/dataset"
+    opts.data_path = "dataset"
     opts.eval_out_dir = "evaluations"
     opts.model_name = "weights"
     opts.log_dir = "log"
