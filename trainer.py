@@ -32,7 +32,7 @@ class Trainer:
         self.opt = options
         self.log_path = os.path.join(self.opt.log_dir, self.opt.model_name)
 
-        # checking height and width are multiples of 32
+        # checking height and width are multiples of 32        
         assert self.opt.height % 32 == 0, "'height' must be a multiple of 32"
         assert self.opt.width % 32 == 0, "'width' must be a multiple of 32"
 
@@ -117,9 +117,9 @@ class Trainer:
                          "kitti_odom": KITTIOdomDataset,
                          "carla": CARLADataset}
         self.dataset = datasets_dict[self.opt.dataset]
-        train_filenames = readlines(os.path.join('splits', 'carla', 'train_files.txt'))
-        val_filenames = readlines(os.path.join('splits', 'carla', 'val_files.txt'))
-        img_ext = '.jpg'
+        train_filenames = readlines(os.path.join('splits', 'carla_high_res', 'train_files.txt'))
+        val_filenames = readlines(os.path.join('splits', 'carla_high_res', 'val_files.txt'))
+        img_ext = ".jpeg"
 
         num_train_samples = len(train_filenames)
         self.num_total_steps = num_train_samples // self.opt.batch_size * self.opt.num_epochs
@@ -502,27 +502,28 @@ class Trainer:
         This isn't particularly accurate as it averages over the entire batch,
         so is only used to give an indication of validation performance
         """
+        
         depth_pred = outputs[("depth", 0, 0)]
         depth_pred = torch.clamp(F.interpolate(
-            depth_pred, [375, 1242], mode="bilinear", align_corners=False), 1e-3, 80)
+            depth_pred, [self.opt.width, self.opt.height], mode="bilinear", align_corners=False), 1e-3, self.opt.max_depth)
         depth_pred = depth_pred.detach()
 
         depth_gt = inputs["depth_gt"]
-        mask = depth_gt > 0
-
+        mask = depth_gt > 0        
         # garg/eigen crop
-        crop_mask = torch.zeros_like(mask)
-        crop_mask[:, :, 153:371, 44:1197] = 1
-        mask = mask * crop_mask
+        # Commented since my images are of different size than KITTI (this crop section makes no sense for me)
+        # Maybe for my case I should crop another part of my images.
+        # crop_mask = torch.zeros_like(mask)
+        # crop_mask[:, :, 153:371, 44:1197] = 1
+        # mask = mask * crop_mask
 
         depth_gt = depth_gt[mask]
         depth_pred = depth_pred[mask]
         depth_pred *= torch.median(depth_gt) / torch.median(depth_pred)
-
-        depth_pred = torch.clamp(depth_pred, min=1e-3, max=80)
+        depth_pred = torch.clamp(depth_pred, min=1e-3, max=self.opt.max_depth)
 
         depth_errors = compute_depth_errors(depth_gt, depth_pred)
-
+        
         for i, metric in enumerate(self.depth_metric_names):
             losses[metric] = np.array(depth_errors[i].cpu())
 

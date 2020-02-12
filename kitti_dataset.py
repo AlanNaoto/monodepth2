@@ -18,33 +18,32 @@ from mono_dataset import MonoDataset
 class CARLADataset(MonoDataset):
     def __init__(self, *args, **kwargs):
         super(CARLADataset, self).__init__(*args, **kwargs)
-        # Maybe the width/height dimensions should be normalized?
         fov = 90  # Degrees
         focal = self.width / (2.0 * np.tan(fov * np.pi / 360.0))
-        # K = camera intrinsics parameters
-        self.K = np.array([[focal/self.width,                  0,   self.width/2, 0],
-                           [                0, focal/self.height,  self.height/2, 0],
-                           [                0,                 0,              1, 0],
-                           [                0,                 0,              0, 1]], dtype=np.float32)
+        # K = camera intrinsics parameters (normalized)
+        self.K = np.array([[focal/self.width,                  0, 1/2, 0],
+                           [                0, focal/self.height, 1/2, 0],
+                           [                0,                 0,   1, 0],
+                           [                0,                 0,   0, 1]], dtype=np.float32)
         self.full_res_shape = (self.width, self.height)
 
     def get_image_path(self, folder, frame_index, side):
         # folder is actually pointing to the FRAME name
-        image_path = os.path.join(self.data_path, 'imgs_all', folder + ".jpg")
+        # Verification done since I have two directories of images - one for training and another for validation
+        image_path = os.path.join(self.data_path, 'imgs', folder + ".jpeg")
         return image_path
 
     def get_color(self, folder, frame_index, side, do_flip):
         color = self.loader(self.get_image_path(folder, frame_index, side))
         return color
 
-    # TODO Might need to be implemented later (return depth np array?)
-    def get_depth(self, folder, frame_index, side, do_flip):
-        pass  # np.load depth array
-        return True
+    def get_depth(self, folder, frame_index, side, do_flip):        
+        depth_array = np.load(os.path.join(self.data_path, "anns", 'depth', folder + ".npy"))
+        depth_array = depth_array.transpose()
+        return depth_array 
 
-    # TODO I don't think this function needs to be implemented (I will maybe for now ignore depth points)
-    def check_depth(self):
-        pass
+    # Return true or false (to apply or not apply losses computation from the depth gt)
+    def check_depth(self):        
         return True
 
 

@@ -9,8 +9,8 @@ def create_files_txt(dir_with_imgs, filename=None):
 
 if __name__ == "__main__":
     # Input
-    train_imgs_dir = '/mnt/6EFE2115FE20D75D/Naoto/UFPR/Mestrado/9_Code/depth_estimation/monodepth2/data/imgs_train'
-    val_imgs_dir = '/mnt/6EFE2115FE20D75D/Naoto/UFPR/Mestrado/9_Code/depth_estimation/monodepth2/data/imgs_val'
+    train_imgs_dir = '/home/aissrtx2060/workspace/alan/code/depth_estimation/monodepth2/data/imgs_train'
+    val_imgs_dir = '/home/aissrtx2060/workspace/alan/code/depth_estimation/monodepth2/data/imgs_val'
 
     create_files_txt(train_imgs_dir, filename='train_files.txt')
     create_files_txt(val_imgs_dir, filename='val_files.txt')

@@ -9,3 +9,5 @@ kitti_data
 models
 naoto-depth-tests
 naoto_depth/dataset
+inference_output
+log
