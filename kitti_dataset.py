@@ -30,7 +30,7 @@ class CARLADataset(MonoDataset):
     def get_image_path(self, folder, frame_index, side):
         # folder is actually pointing to the FRAME name
         # Verification done since I have two directories of images - one for training and another for validation
-        image_path = os.path.join(self.data_path, 'imgs', folder + ".jpeg")
+        image_path = os.path.join(self.data_path, 'imgs', folder + ".png")
         return image_path
 
     def get_color(self, folder, frame_index, side, do_flip):
@@ -38,7 +38,7 @@ class CARLADataset(MonoDataset):
         return color
 
     def get_depth(self, folder, frame_index, side, do_flip):        
-        depth_array = np.load(os.path.join(self.data_path, "anns", 'depth', folder + ".npy"))
+        depth_array = np.load(os.path.join(self.data_path, 'depth', folder + ".npy"))
         depth_array = depth_array.transpose()
         return depth_array 
 

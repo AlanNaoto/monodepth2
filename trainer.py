@@ -117,9 +117,9 @@ class Trainer:
                          "kitti_odom": KITTIOdomDataset,
                          "carla": CARLADataset}
         self.dataset = datasets_dict[self.opt.dataset]
-        train_filenames = readlines(os.path.join('splits', 'carla_high_res', 'train_files.txt'))
-        val_filenames = readlines(os.path.join('splits', 'carla_high_res', 'val_files.txt'))
-        img_ext = ".jpeg"
+        train_filenames = readlines(os.path.join('splits', self.opt.model_name, 'train_files.txt'))
+        val_filenames = readlines(os.path.join('splits', self.opt.model_name, 'val_files.txt'))
+        img_ext = ".png"
 
         num_train_samples = len(train_filenames)
         self.num_total_steps = num_train_samples // self.opt.batch_size * self.opt.num_epochs
