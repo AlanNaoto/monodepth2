@@ -117,9 +117,9 @@ class Trainer:
                          "kitti_odom": KITTIOdomDataset,
                          "carla": CARLADataset}
         self.dataset = datasets_dict[self.opt.dataset]
-        train_filenames = readlines(os.path.join('splits', self.opt.model_name, 'train_files.txt'))
-        val_filenames = readlines(os.path.join('splits', self.opt.model_name, 'val_files.txt'))
-        img_ext = ".png"
+        train_filenames = readlines(os.path.join("splits", self.opt.split, 'train_files.txt'))
+        val_filenames = readlines(os.path.join("splits", self.opt.split, 'val_files.txt'))
+        img_ext = '.png' if self.opt.png else '.jpg'        
 
         num_train_samples = len(train_filenames)
         self.num_total_steps = num_train_samples // self.opt.batch_size * self.opt.num_epochs
@@ -505,7 +505,7 @@ class Trainer:
         
         depth_pred = outputs[("depth", 0, 0)]
         depth_pred = torch.clamp(F.interpolate(
-            depth_pred, [self.opt.width, self.opt.height], mode="bilinear", align_corners=False), 1e-3, self.opt.max_depth)
+            depth_pred, [self.opt.width, self.opt.height], mode="bilinear", align_corners=False), self.opt.min_depth, self.opt.max_depth)
         depth_pred = depth_pred.detach()
 
         depth_gt = inputs["depth_gt"]
@@ -520,7 +520,7 @@ class Trainer:
         depth_gt = depth_gt[mask]
         depth_pred = depth_pred[mask]
         depth_pred *= torch.median(depth_gt) / torch.median(depth_pred)
-        depth_pred = torch.clamp(depth_pred, min=1e-3, max=self.opt.max_depth)
+        depth_pred = torch.clamp(depth_pred, min=self.opt.min_depth, max=self.opt.max_depth)
 
         depth_errors = compute_depth_errors(depth_gt, depth_pred)
         

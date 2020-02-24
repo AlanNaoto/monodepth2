@@ -19,10 +19,10 @@ class CARLADataset(MonoDataset):
     def __init__(self, *args, **kwargs):
         super(CARLADataset, self).__init__(*args, **kwargs)
         fov = 90  # Degrees
-        focal = self.width / (2.0 * np.tan(fov * np.pi / 360.0))
+        focal = self.width / (2 * np.tan(fov * np.pi / 360))
         # K = camera intrinsics parameters (normalized)
-        self.K = np.array([[focal/self.width,                  0, 1/2, 0],
-                           [                0, focal/self.height, 1/2, 0],
+        self.K = np.array([[focal/self.width,                  0, 0.5, 0],
+                           [                0, focal/self.height, 0.5, 0],
                            [                0,                 0,   1, 0],
                            [                0,                 0,   0, 1]], dtype=np.float32)
         self.full_res_shape = (self.width, self.height)
@@ -30,11 +30,13 @@ class CARLADataset(MonoDataset):
     def get_image_path(self, folder, frame_index, side):
         # folder is actually pointing to the FRAME name
         # Verification done since I have two directories of images - one for training and another for validation
-        image_path = os.path.join(self.data_path, 'imgs', folder + ".png")
+        image_path = os.path.join(self.data_path, 'imgs_png_renamed', folder + ".png")
         return image_path
 
     def get_color(self, folder, frame_index, side, do_flip):
         color = self.loader(self.get_image_path(folder, frame_index, side))
+        if do_flip:
+            color = color.transpose(pil.FLIP_LEFT_RIGHT)
         return color
 
     def get_depth(self, folder, frame_index, side, do_flip):        
@@ -44,7 +46,7 @@ class CARLADataset(MonoDataset):
 
     # Return true or false (to apply or not apply losses computation from the depth gt)
     def check_depth(self):        
-        return True
+        return False
 
 
 class KITTIDataset(MonoDataset):

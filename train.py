@@ -40,27 +40,29 @@ if __name__ == "__main__":
     options = MonodepthOptions()
     opts = options.parse()
     # Path to save results and logs
-    # opts.load_weights_folder = "weights"  # If from scratch, comment
-    opts.data_path = "/media/aissrtx2060/Naotop_1TB/data/CARLA_1024x768"  # Path to dataset dir with imgs and annotations
+    opts.weights_init = "scratch"  # scratch or pretrained
+    #opts.load_weights_folder = ""  # If from scratch, comment (still FIXME on loading the correct files)
+    opts.data_path = "/media/aissrtx2060/Seagate Expansion Drive/Data/CARLA_640x192"  # Path to dataset dir with imgs and annotations
     opts.eval_out_dir = "evaluations"
-    opts.model_name = "carla_1024x768"
-    opts.log_dir = "/media/aissrtx2060/Naotop_1TB/monodepth2_data/carla_1024x768"  # Path where the weights and general logging will be saved
+    opts.model_name = "carla_640x192"
+    opts.split = "carla_640x192"
+    opts.log_dir = "/media/aissrtx2060/Seagate Expansion Drive/monodepth2_results/carla_640x192_sequential_names"  # Path where the weights and general logging will be saved
+    opts.png = True
 
     # Network general settings
     opts.dataset = 'carla'
-    opts.width = 1024
-    opts.height = 768
-    opts.num_epochs =  20
+    opts.width = 640
+    opts.height = 192
+    opts.num_epochs =  15
     opts.learning_rate = 1E-4  # 1E-4
-    opts.batch_size = 1
-    opts.weights_init = "scratch"  # scratch or pretrained
+    opts.batch_size = 5
     opts.eval_mono = True
     opts.save_pred_disps = True
     opts.min_depth = 0.1
     opts.max_depth = 80.0
 
     # Fine tuning stuff
-    # opts = perform_finer_network_changes(opts)
+    # opts = perform_finer_network_changes(opts)    
 
     trainer = Trainer(opts)
     trainer.train()
