@@ -8,8 +8,6 @@ from __future__ import absolute_import, division, print_function
 
 import numpy as np
 import time
-import os
-import sys
 
 import torch
 import torch.nn.functional as F
@@ -23,8 +21,9 @@ from utils import *
 from kitti_utils import *
 from layers import *
 
-from kitti_dataset import KITTIRAWDataset, KITTIOdomDataset, CARLADataset
+import datasets
 import networks
+#from IPython import embed
 
 
 class Trainer:
@@ -32,7 +31,7 @@ class Trainer:
         self.opt = options
         self.log_path = os.path.join(self.opt.log_dir, self.opt.model_name)
 
-        # checking height and width are multiples of 32        
+        # checking height and width are multiples of 32
         assert self.opt.height % 32 == 0, "'height' must be a multiple of 32"
         assert self.opt.width % 32 == 0, "'width' must be a multiple of 32"
 
@@ -52,7 +51,6 @@ class Trainer:
         if self.opt.use_stereo:
             self.opt.frame_ids.append("s")
 
-        # Network initialization
         self.models["encoder"] = networks.ResnetEncoder(
             self.opt.num_layers, self.opt.weights_init == "pretrained")
         self.models["encoder"].to(self.device)
@@ -113,18 +111,20 @@ class Trainer:
         print("Training is using:\n  ", self.device)
 
         # data
-        datasets_dict = {"kitti": KITTIRAWDataset,
-                         "kitti_odom": KITTIOdomDataset,
-                         "carla": CARLADataset}
+        datasets_dict = {"kitti": datasets.KITTIRAWDataset,
+                         "kitti_odom": datasets.KITTIOdomDataset,
+                         "carla": datasets.CarlaDataset}
         self.dataset = datasets_dict[self.opt.dataset]
-        train_filenames = readlines(os.path.join("splits", self.opt.split, 'train_files.txt'))
-        val_filenames = readlines(os.path.join("splits", self.opt.split, 'val_files.txt'))
-        img_ext = '.png' if self.opt.png else '.jpg'        
+
+        fpath = os.path.join(os.path.dirname(__file__), "splits", self.opt.split, "{}_files.txt")
+
+        train_filenames = readlines(fpath.format("train"))
+        val_filenames = readlines(fpath.format("val"))
+        img_ext = '.png' if self.opt.png else '.jpg'
 
         num_train_samples = len(train_filenames)
         self.num_total_steps = num_train_samples // self.opt.batch_size * self.opt.num_epochs
 
-        # Train and validation splits (Default is KITTIRAWDataset)
         train_dataset = self.dataset(
             self.opt.data_path, train_filenames, self.opt.height, self.opt.width,
             self.opt.frame_ids, 4, is_train=True, img_ext=img_ext)
@@ -147,7 +147,6 @@ class Trainer:
             self.ssim = SSIM()
             self.ssim.to(self.device)
 
-        # Multi-scale estimation
         self.backproject_depth = {}
         self.project_3d = {}
         for scale in self.opt.scales:
@@ -163,8 +162,7 @@ class Trainer:
         self.depth_metric_names = [
             "de/abs_rel", "de/sq_rel", "de/rms", "de/log_rms", "da/a1", "da/a2", "da/a3"]
 
-        #print("Using split:\n  ", self.opt.split)
-        print("Using naoto's custom split")
+        print("Using split:\n  ", self.opt.split)
         print("There are {:d} training items and {:d} validation items\n".format(
             len(train_dataset), len(val_dataset)))
 
@@ -202,9 +200,11 @@ class Trainer:
         self.set_train()
 
         for batch_idx, inputs in enumerate(self.train_loader):
+
             before_op_time = time.time()
 
             outputs, losses = self.process_batch(inputs)
+
             self.model_optimizer.zero_grad()
             losses["loss"].backward()
             self.model_optimizer.step()
@@ -483,7 +483,7 @@ class Trainer:
                     idxs > identity_reprojection_loss.shape[1] - 1).float()
 
             loss += to_optimise.mean()
-            # Here are probably the predicted depth maps
+
             mean_disp = disp.mean(2, True).mean(3, True)
             norm_disp = disp / (mean_disp + 1e-7)
             smooth_loss = get_smooth_loss(norm_disp, color)
@@ -502,28 +502,27 @@ class Trainer:
         This isn't particularly accurate as it averages over the entire batch,
         so is only used to give an indication of validation performance
         """
-        
         depth_pred = outputs[("depth", 0, 0)]
         depth_pred = torch.clamp(F.interpolate(
-            depth_pred, [self.opt.width, self.opt.height], mode="bilinear", align_corners=False), self.opt.min_depth, self.opt.max_depth)
+            depth_pred, [375, 1242], mode="bilinear", align_corners=False), 1e-3, 80)
         depth_pred = depth_pred.detach()
 
         depth_gt = inputs["depth_gt"]
-        mask = depth_gt > 0        
+        mask = depth_gt > 0
+
         # garg/eigen crop
-        # Commented since my images are of different size than KITTI (this crop section makes no sense for me)
-        # Maybe for my case I should crop another part of my images.
-        # crop_mask = torch.zeros_like(mask)
-        # crop_mask[:, :, 153:371, 44:1197] = 1
-        # mask = mask * crop_mask
+        crop_mask = torch.zeros_like(mask)
+        crop_mask[:, :, 153:371, 44:1197] = 1
+        mask = mask * crop_mask
 
         depth_gt = depth_gt[mask]
         depth_pred = depth_pred[mask]
         depth_pred *= torch.median(depth_gt) / torch.median(depth_pred)
-        depth_pred = torch.clamp(depth_pred, min=self.opt.min_depth, max=self.opt.max_depth)
+
+        depth_pred = torch.clamp(depth_pred, min=1e-3, max=80)
 
         depth_errors = compute_depth_errors(depth_gt, depth_pred)
-        
+
         for i, metric in enumerate(self.depth_metric_names):
             losses[metric] = np.array(depth_errors[i].cpu())
 
