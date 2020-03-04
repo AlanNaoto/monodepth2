@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="2e86e385-f942-4ce6-8872-ee5480a9628c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/train.py" beforeDir="false" afterPath="$PROJECT_DIR$/train.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/trainer.py" beforeDir="false" afterPath="$PROJECT_DIR$/trainer.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -12,6 +12,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="ProjectId" id="1XU8znTyKaDNFxOJeEOpW8UTPCn" />
   <component name="ProjectViewState">
@@ -154,6 +155,10 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
+    <state x="2351" y="108" width="1047" height="982" key="CommitChangelistDialog2" timestamp="1583325127226">
+      <screen x="1920" y="0" width="1920" height="1200" />
+    </state>
+    <state x="2351" y="108" width="1047" height="982" key="CommitChangelistDialog2/67.222.1853.1053/1920.0.1920.1200@1920.0.1920.1200" timestamp="1583325127226" />
     <state width="711" height="646" key="DebuggerActiveHint" timestamp="1581091222062">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
@@ -202,9 +207,13 @@
     </state>
     <state width="1897" height="376" key="GridCell.Tab.1.right/67.222.1853.1053/1920.0.1920.1200@1920.0.1920.1200" timestamp="1583253745425" />
     <state width="1830" height="318" key="GridCell.Tab.1.right/67.27.1853.1053@67.27.1853.1053" timestamp="1581092024941" />
-    <state x="2646" y="514" width="457" height="170" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1583248257976">
+    <state x="2736" y="239" width="277" height="720" key="RollbackChangesDialog" timestamp="1583325203101">
       <screen x="1920" y="0" width="1920" height="1200" />
     </state>
-    <state x="2646" y="514" width="457" height="170" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/67.222.1853.1053/1920.0.1920.1200@1920.0.1920.1200" timestamp="1583248257976" />
+    <state x="2736" y="239" width="277" height="720" key="RollbackChangesDialog/67.222.1853.1053/1920.0.1920.1200@1920.0.1920.1200" timestamp="1583325203101" />
+    <state x="2646" y="514" width="457" height="170" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1583325143093">
+      <screen x="1920" y="0" width="1920" height="1200" />
+    </state>
+    <state x="2646" y="514" width="457" height="170" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/67.222.1853.1053/1920.0.1920.1200@1920.0.1920.1200" timestamp="1583325143093" />
   </component>
 </project>
