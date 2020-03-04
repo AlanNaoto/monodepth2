@@ -14,20 +14,20 @@ opts = options.parse()
 
 opts.weights_init = "scratch"  # scratch or pretrained
 #opts.load_weights_folder = ""  # If from scratch, comment (still FIXME on loading the correct files)
-opts.data_path = "/media/aissrtx2060/Seagate Expansion Drive/Data/CARLA_640x192"  # Path to dataset dir with imgs and annotations
+opts.data_path = "/mnt/6EFE2115FE20D75D/Naoto/UFPR/Mestrado/9_Code/datasets/CARLA/CARLA_1024x320"  # Path to dataset dir with imgs and annotations
 opts.eval_out_dir = "evaluations"
-opts.model_name = "carla_640x192"
-opts.split = "carla_640x192"
-opts.log_dir = "/media/aissrtx2060/Seagate Expansion Drive/monodepth2_results/carla_640x192_town01"  # Path where the weights and general logging will be saved
+opts.model_name = "carla_1024x320"
+opts.split = "carla_1024x320"
+opts.log_dir = "results/carla_1024x320_10_frames"  # Path where the weights and general logging will be saved
 opts.png = False
 
 # Network general settings
 opts.dataset = 'carla'
-opts.width = 640
-opts.height = 192
+opts.width = 1024
+opts.height = 320
 opts.num_epochs = 10
 opts.learning_rate = 1E-4  # 1E-4
-opts.batch_size = 5
+opts.batch_size = 1
 opts.eval_mono = True
 opts.save_pred_disps = True
 opts.min_depth = 0.1

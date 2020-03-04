@@ -504,22 +504,24 @@ class Trainer:
         """
         depth_pred = outputs[("depth", 0, 0)]
         depth_pred = torch.clamp(F.interpolate(
-            depth_pred, [375, 1242], mode="bilinear", align_corners=False), 1e-3, 80)
+            depth_pred, [self.opt.height, self.opt.width], mode="bilinear", align_corners=False), 1e-3, self.opt.max_depth)
         depth_pred = depth_pred.detach()
 
         depth_gt = inputs["depth_gt"]
         mask = depth_gt > 0
 
-        # garg/eigen crop
+        # This crop is only used for KITTI. In my case, if used, it might be different.
+        # # garg/eigen crop
         crop_mask = torch.zeros_like(mask)
-        crop_mask[:, :, 153:371, 44:1197] = 1
+        # crop_mask[:, :, 153:371, 44:1197] = 1  # Remember to change here according to the image input size
+        crop_mask[:, :, 155:371, 44:980] = 1
         mask = mask * crop_mask
 
         depth_gt = depth_gt[mask]
         depth_pred = depth_pred[mask]
         depth_pred *= torch.median(depth_gt) / torch.median(depth_pred)
 
-        depth_pred = torch.clamp(depth_pred, min=1e-3, max=80)
+        depth_pred = torch.clamp(depth_pred, min=1e-3, max=self.opt.max_depth)
 
         depth_errors = compute_depth_errors(depth_gt, depth_pred)
 
