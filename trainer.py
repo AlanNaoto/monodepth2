@@ -512,10 +512,9 @@ class Trainer:
 
         # This crop is only used for KITTI. In my case, if used, it might be different.
         # # garg/eigen crop
-        crop_mask = torch.zeros_like(mask)
-        # crop_mask[:, :, 153:371, 44:1197] = 1  # Remember to change here according to the image input size
-        crop_mask[:, :, 155:371, 44:980] = 1
-        mask = mask * crop_mask
+        # crop_mask = torch.zeros_like(mask)
+        # crop_mask[:, :, 153:371, 44:1197] = 1  # Remember to change here according to the LIDAR data range
+        # mask = mask * crop_mask
 
         depth_gt = depth_gt[mask]
         depth_pred = depth_pred[mask]
