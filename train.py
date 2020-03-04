@@ -12,8 +12,8 @@ from options import MonodepthOptions
 options = MonodepthOptions()
 opts = options.parse()
 
-opts.weights_init = "scratch"  # scratch or pretrained
-#opts.load_weights_folder = ""  # If from scratch, comment (still FIXME on loading the correct files)
+opts.weights_init = "scratch"  # For me, it is always from scratch (pretrained loads other weights from the repo)
+opts.load_weights_folder = "/media/alan/Seagate Expansion Drive/monodepth2_results/carla_640x192_town01/carla_640x192/models/weights_0"  # If not to load weights, assign None
 opts.data_path = "/mnt/6EFE2115FE20D75D/Naoto/UFPR/Mestrado/9_Code/datasets/CARLA/CARLA_1024x320"  # Path to dataset dir with imgs and annotations
 opts.eval_out_dir = "evaluations"
 opts.model_name = "carla_1024x320"
