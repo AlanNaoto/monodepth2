@@ -59,8 +59,10 @@ def batch_post_process_disparity(l_disp, r_disp):
 def evaluate(opt):
     """Evaluates a pretrained model using a specified test set
     """
-    MIN_DEPTH = 1e-3
-    MAX_DEPTH = 80
+    #MIN_DEPTH = 1e-3
+    #MAX_DEPTH = 80
+    MIN_DEPTH = opt.min_depth
+    MAX_DEPTH = opt.max_depth
 
     assert sum((opt.eval_mono, opt.eval_stereo)) == 1, \
         "Please choose mono or stereo evaluation by setting either --eval_mono or --eval_stereo"
@@ -162,8 +164,10 @@ def evaluate(opt):
         print("-> No ground truth is available for the KITTI benchmark, so not evaluating. Done.")
         quit()
 
-    gt_path = os.path.join(splits_dir, opt.eval_split, "gt_depths.npz")
-    gt_depths = np.load(gt_path, fix_imports=True, encoding='latin1')["data"]
+    #gt_path = os.path.join(splits_dir, opt.eval_split, "gt_depths.npz")
+    # gt_depths = np.load(gt_path, fix_imports=True, encoding='latin1')["data"]
+    gt_dir = os.path.join(opt.data_path, "depth_npy")
+    gt_depths = os.listdir(gt_dir)
 
     print("-> Evaluating")
 
@@ -180,7 +184,8 @@ def evaluate(opt):
 
     for i in range(pred_disps.shape[0]):
 
-        gt_depth = gt_depths[i]
+        # gt_depth = gt_depths[i]
+        gt_depth = np.load(gt_depths[i])
         gt_height, gt_width = gt_depth.shape[:2]
 
         pred_disp = pred_disps[i]
@@ -227,4 +232,11 @@ def evaluate(opt):
 
 if __name__ == "__main__":
     options = MonodepthOptions()
-    evaluate(options.parse())
+    opts = options.parse()
+    opts.eval_mono = True
+    opts.eval_split = "carla_1024x320"
+    opts.data_path = "/media/aissrtx2060/Naotop_1TB/data/CARLA_1024x320"
+    opts.load_weights_folder = "/media/aissrtx2060/Naotop_1TB1/monodepth2_data/carla_1024x320_full/carla_1024x320/models/weights_9"
+    opts.max_depth = 75.0
+    opts.min_depth = 0.1
+    evaluate(opts)
