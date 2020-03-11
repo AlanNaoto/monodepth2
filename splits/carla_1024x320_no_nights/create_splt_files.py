@@ -4,16 +4,18 @@ import random
 
 def create_files_txt(imgs_dir, train_split, img_ext):
     files = sorted(os.listdir(imgs_dir))
-    # Each sequence ends after 60 frames. Therefore, I have to remove each frame multiple of number 0 and 60, since they don't have previous AND posterior frames
+    night_frames = 0
     filtered_img_files = []
     for img_idx in range(len(files)):
-        # This section is for 10 frames only
-        if img_idx != 0 and img_idx != 9:
-            filtered_img_files.append(files[img_idx])
-        # Section below is for the whole dataset
-        # if img_idx % 60 != 0:
-        #     filtered_img_files.append(files[img_idx])
-        
+        # Each sequence ends after 60 frames. Therefore, I have to remove each frame multiple of number 0 and 60, since they don't have previous AND posterior frames
+        if img_idx % 60 != 0:
+            # Night frames appear at the end of each town sequence. That is, 60frames*13egos*5weathers=3900 frames per town and 780 frames per weather. Range of night = (3120, 3900)        
+            if 3120 <= img_idx%3900 < 3900:
+                night_frames+=1
+            else:
+                filtered_img_files.append(files[img_idx])
+    print(f'skipped {night_frames} night frames')
+
     train_amount = int(len(filtered_img_files)*train_split)
     val_amount = int(len(filtered_img_files) - train_amount)    
     train_files = filtered_img_files[:train_amount]

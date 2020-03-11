@@ -21,7 +21,7 @@ class CarlaDataset(MonoDataset):
         self.full_res_shape = (img_width, img_height)
 
     def check_depth(self):
-        return True
+        return False # don't have it on this computer
 
     def get_image_path(self, folder, frame_index, side):        
         img_idx = int(folder)

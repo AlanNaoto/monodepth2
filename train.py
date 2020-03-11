@@ -13,12 +13,12 @@ options = MonodepthOptions()
 opts = options.parse()
 
 opts.weights_init = "scratch"  # For me, it is always from scratch (pretrained loads other weights from the repo)
-opts.load_weights_folder = "/media/alan/Seagate Expansion Drive/monodepth2_results/carla_640x192_town01/carla_640x192/models/weights_0"  # If not to load weights, assign None
-opts.data_path = "/mnt/6EFE2115FE20D75D/Naoto/UFPR/Mestrado/9_Code/datasets/CARLA/CARLA_1024x320"  # Path to dataset dir with imgs and annotations
+opts.load_weights_folder = None  # If not to load weights, assign None
+opts.data_path = "/home/alan/workspace/mestrado/dataset/CARLA_1024x320"  # Path to dataset dir with imgs and annotations
 opts.eval_out_dir = "evaluations"
-opts.model_name = "carla_1024x320"
-opts.split = "carla_1024x320"  # waymo_1024x320
-opts.log_dir = "results/carla_1024x320_10_frames"  # Path where the weights and general logging will be saved
+opts.model_name = "carla_1024x320_no_nights"
+opts.split = "carla_1024x320_no_nights"
+opts.log_dir = "results/carla_1024x320_no_nights"  # Path where the weights and general logging will be saved
 opts.png = False
 
 # Network general settings
@@ -31,7 +31,7 @@ opts.batch_size = 1
 opts.eval_mono = True
 opts.save_pred_disps = True
 opts.min_depth = 0.1
-opts.max_depth = 75.0
+opts.max_depth = 75.0  # Adjusted to waymo's max sensor range
 
 if __name__ == "__main__":
     trainer = Trainer(opts)
