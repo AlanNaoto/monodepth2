@@ -3,7 +3,7 @@ import random
 
 
 def create_files_txt(imgs_dir, train_split, img_ext):
-    files = os.listdir(imgs_dir)
+    files = sorted(os.listdir(imgs_dir))
     # Each sequence ends after 60 frames. Therefore, I have to remove each frame multiple of number 0 and 60, since they don't have previous AND posterior frames
     filtered_img_files = []
     for img_idx in range(len(files)):
