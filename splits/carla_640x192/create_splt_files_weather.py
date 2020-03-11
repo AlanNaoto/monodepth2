@@ -3,7 +3,7 @@ import random
 
 
 def create_files_txt(imgs_dir, train_split, img_ext):
-    files = os.listdir(imgs_dir)
+    files = sorted(os.listdir(imgs_dir))
 
     # # Isolating only the good weather sequence of the first town (5 weathers; the 4th is the good one)
     # weather_sequence_len = 60*13
