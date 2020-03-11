@@ -17,12 +17,12 @@ opts.load_weights_folder = "/media/alan/Seagate Expansion Drive/monodepth2_resul
 opts.data_path = "/mnt/6EFE2115FE20D75D/Naoto/UFPR/Mestrado/9_Code/datasets/CARLA/CARLA_1024x320"  # Path to dataset dir with imgs and annotations
 opts.eval_out_dir = "evaluations"
 opts.model_name = "carla_1024x320"
-opts.split = "carla_1024x320"
+opts.split = "carla_1024x320"  # waymo_1024x320
 opts.log_dir = "results/carla_1024x320_10_frames"  # Path where the weights and general logging will be saved
 opts.png = False
 
 # Network general settings
-opts.dataset = 'carla'
+opts.dataset = 'carla'  # waymo
 opts.width = 1024
 opts.height = 320
 opts.num_epochs = 10
@@ -31,7 +31,7 @@ opts.batch_size = 1
 opts.eval_mono = True
 opts.save_pred_disps = True
 opts.min_depth = 0.1
-opts.max_depth = 80.0
+opts.max_depth = 75.0
 
 if __name__ == "__main__":
     trainer = Trainer(opts)

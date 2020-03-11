@@ -76,13 +76,14 @@ def evaluate(opt):
 
         print("-> Loading weights from {}".format(opt.load_weights_folder))
 
-        filenames = readlines(os.path.join(splits_dir, opt.eval_split, "test_files.txt"))
+        #filenames = readlines(os.path.join(splits_dir, opt.eval_split, "test_files.txt"))
+        filenames = readlines(os.path.join(splits_dir, opt.eval_split, "val_files.txt"))
         encoder_path = os.path.join(opt.load_weights_folder, "encoder.pth")
         decoder_path = os.path.join(opt.load_weights_folder, "depth.pth")
 
         encoder_dict = torch.load(encoder_path)
 
-        dataset = datasets.KITTIRAWDataset(opt.data_path, filenames,
+        dataset = datasets.carla_dataset.CarlaDataset(opt.data_path, filenames,
                                            encoder_dict['height'], encoder_dict['width'],
                                            [0], 4, is_train=False)
         dataloader = DataLoader(dataset, 16, shuffle=False, num_workers=opt.num_workers,
@@ -167,7 +168,7 @@ def evaluate(opt):
     #gt_path = os.path.join(splits_dir, opt.eval_split, "gt_depths.npz")
     # gt_depths = np.load(gt_path, fix_imports=True, encoding='latin1')["data"]
     gt_dir = os.path.join(opt.data_path, "depth_npy")
-    gt_depths = os.listdir(gt_dir)
+    gt_depths = [os.path.join(gt_dir, x) for x in os.listdir(gt_dir)]
 
     print("-> Evaluating")
 
