@@ -40,9 +40,9 @@ def create_files_txt(imgs_dir, train_split, img_ext, metadata_db_file):
 
 if __name__ == "__main__":
     # Input
-    imgs_dir = "/media/aissrtx2060/Seagate Expansion Drive/Data/Waymo/transformed_data/imgs_jpg_1024x320"
+    imgs_dir = "/home/alan/workspace/mestrado/dataset/WAYMO_1024x320/imgs_jpg"
     img_ext = ".jpg"
-    metadata_db_file = "/media/aissrtx2060/Seagate Expansion Drive/Data/Waymo/transformed_data/metadata/annotation_metadata.db"
+    metadata_db_file = "/home/alan/workspace/mestrado/dataset/WAYMO_1024x320/annotation_metadata.db"
     train_split = 0.80
 
     create_files_txt(imgs_dir, train_split, img_ext, metadata_db_file)

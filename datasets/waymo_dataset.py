@@ -27,7 +27,7 @@ class WaymoDataset(MonoDataset):
         img_idx = int(folder)
         img_idx = img_idx + frame_index  # Gets the previous, current or next frame for comparison
         img_file = f'{img_idx:05d}.jpg'
-        image_path = os.path.join(self.data_path, 'imgs_jpg_1024x320', img_file)
+        image_path = os.path.join(self.data_path, 'imgs_jpg', img_file)
         return image_path
 
     def get_depth(self, folder, frame_index, side, do_flip):
