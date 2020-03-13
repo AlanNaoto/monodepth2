@@ -1,7 +1,7 @@
 import numpy as np
 import PIL.Image as pil
 import os
-import pdb
+import cv2
 
 from .mono_dataset import MonoDataset
 
@@ -41,8 +41,9 @@ class WaymoDataset(MonoDataset):
         depth_gt = np.zeros((1280, 1920))  # Original resolution (height, width)
         for lidar_point in lidar_data:
             depth_gt[int(lidar_point[1])][int(lidar_point[0])] = lidar_point[2]
-        depth_gt = np.resize(depth_gt, (self.full_res_shape[1], self.full_res_shape[0]))    
-
+        # Since we are resizing the GT, then its a very raw approximation
+        depth_gt = cv2.resize(depth_gt, (self.full_res_shape[0], self.full_res_shape[1]))    
+ 
         if do_flip:
             depth_gt = np.fliplr(depth_gt)
         return depth_gt

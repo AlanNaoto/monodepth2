@@ -516,7 +516,6 @@ class Trainer:
         # crop_mask = torch.zeros_like(mask)
         # crop_mask[:, :, 153:371, 44:1197] = 1  # Remember to change here according to the LIDAR data range
         # mask = mask * crop_mask
-
         depth_gt = depth_gt[mask]
         depth_pred = depth_pred[mask]
         depth_pred *= torch.median(depth_gt) / torch.median(depth_pred)
