@@ -38,7 +38,7 @@ class WaymoDataset(MonoDataset):
         lidar_data = np.load(lidar_path)
 
         # Transform data from LIDAR standard to our img-like array standard
-        depth_gt = np.zeros((1920, 1280))  # Original resolution
+        depth_gt = np.zeros((1280, 1920))  # Original resolution (height, width)
         for lidar_point in lidar_data:
             depth_gt[int(lidar_point[1])][int(lidar_point[0])] = lidar_point[2]
         depth_gt = np.resize(depth_gt, (self.full_res_shape[1], self.full_res_shape[0]))    
