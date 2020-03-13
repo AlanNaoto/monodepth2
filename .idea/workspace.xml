@@ -3,10 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="2e86e385-f942-4ce6-8872-ee5480a9628c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datasets/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/datasets/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluate_depth.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluate_depth.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/train.py" beforeDir="false" afterPath="$PROJECT_DIR$/train.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trainer.py" beforeDir="false" afterPath="$PROJECT_DIR$/trainer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/splits/waymo_1024x320/create_splt_files.py" beforeDir="false" afterPath="$PROJECT_DIR$/splits/waymo_1024x320/create_splt_files.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -248,6 +245,10 @@
       <screen x="1920" y="0" width="1920" height="1200" />
     </state>
     <state x="2736" y="239" width="277" height="720" key="RollbackChangesDialog/67.222.1853.1053/1920.0.1920.1200@1920.0.1920.1200" timestamp="1583325203101" />
+    <state x="649" y="440" key="com.intellij.ide.util.TipDialog" timestamp="1584091424399">
+      <screen x="67" y="27" width="1853" height="1173" />
+    </state>
+    <state x="649" y="440" key="com.intellij.ide.util.TipDialog/67.27.1853.1173@67.27.1853.1173" timestamp="1584091424399" />
     <state x="2646" y="514" width="457" height="170" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1583325143093">
       <screen x="1920" y="0" width="1920" height="1200" />
     </state>

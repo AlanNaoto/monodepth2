@@ -15,7 +15,7 @@ def create_files_txt(imgs_dir, train_split, img_ext, metadata_db_file):
     files = sorted(os.listdir(imgs_dir))
     for frame_idx in range(len(files)):
         # Skipping start (idx 4) and end (idx 5) frames
-        if db_data[frame_idx][4] != 1 or db_data[frame_idx][5] != 1:
+        if db_data[frame_idx][4] != 1 and db_data[frame_idx][5] != 1:
             filtered_img_files.append(files[frame_idx])
     conn.close()
 
@@ -40,9 +40,9 @@ def create_files_txt(imgs_dir, train_split, img_ext, metadata_db_file):
 
 if __name__ == "__main__":
     # Input
-    imgs_dir = "/mnt/6EFE2115FE20D75D/Naoto/UFPR/Mestrado/9_Code/datasets/CARLA/CARLA_1024x320/imgs_jpg"
+    imgs_dir = "/media/aissrtx2060/Seagate Expansion Drive/Data/Waymo/transformed_data/imgs_jpg_1024x320"
     img_ext = ".jpg"
-    metadata_db_file = "/mnt/6EFE2115FE20D75D/Naoto/UFPR/Mestrado/9_Code/datasets/Waymo/annotation_metadata.db"
+    metadata_db_file = "/media/aissrtx2060/Seagate Expansion Drive/Data/Waymo/transformed_data/metadata/annotation_metadata.db"
     train_split = 0.80
 
     create_files_txt(imgs_dir, train_split, img_ext, metadata_db_file)

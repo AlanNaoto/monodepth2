@@ -27,20 +27,21 @@ class WaymoDataset(MonoDataset):
         img_idx = int(folder)
         img_idx = img_idx + frame_index  # Gets the previous, current or next frame for comparison
         img_file = f'{img_idx:05d}.jpg'
-        image_path = os.path.join(self.data_path, 'imgs_jpg', img_file)
+        image_path = os.path.join(self.data_path, 'imgs_jpg_1024x320', img_file)
         return image_path
 
     def get_depth(self, folder, frame_index, side, do_flip):
         frame_idx = int(folder)
         frame_idx = frame_idx + frame_index  # Gets the previous, current or next frame for comparison
         lidar_file = f'{frame_idx:05d}.npy'
-        lidar_path = os.path.join(self.data_path, 'depth_npy', lidar_file)
+        lidar_path = os.path.join(self.data_path, 'anns_lidar_npy', lidar_file)
         lidar_data = np.load(lidar_path)
 
         # Transform data from LIDAR standard to our img-like array standard
-        depth_gt = np.zeros(self.full_res_shape[1], self.full_res_shape[0])
+        depth_gt = np.zeros((1920, 1280))  # Original resolution
         for lidar_point in lidar_data:
             depth_gt[int(lidar_point[1])][int(lidar_point[0])] = lidar_point[2]
+        depth_gt = np.resize(depth_gt, (self.full_res_shape[1], self.full_res_shape[0]))    
 
         if do_flip:
             depth_gt = np.fliplr(depth_gt)

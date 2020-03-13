@@ -14,15 +14,15 @@ opts = options.parse()
 
 opts.weights_init = "scratch"  # For me, it is always from scratch (pretrained loads other weights from the repo)
 opts.load_weights_folder = None  # If not to load weights, assign None
-opts.data_path = "/home/alan/workspace/mestrado/dataset/CARLA_1024x320"  # Path to dataset dir with imgs and annotations
+opts.data_path = "/media/aissrtx2060/Seagate Expansion Drive/Data/Waymo/transformed_data"  # Path to dataset dir with imgs and annotations
 opts.eval_out_dir = "evaluations"
-opts.model_name = "carla_1024x320"
-opts.split = "carla_1024x320"
-opts.log_dir = "results/"  # Path where the weights and general logging will be saved
+opts.model_name = "waymo_1024x320"
+opts.split = "waymo_1024x320"
+opts.log_dir = "/media/aissrtx2060/Seagate Expansion Drive/monodepth2_results/waymo_1024x320/"  # Path where the weights and general logging will be saved
 opts.png = False
 
 # Network general settings
-opts.dataset = 'carla'  # waymo
+opts.dataset = 'waymo'  # waymo or carla
 opts.width = 1024
 opts.height = 320
 opts.num_epochs = 10
