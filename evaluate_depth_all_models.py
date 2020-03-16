@@ -56,7 +56,7 @@ def batch_post_process_disparity(l_disp, r_disp):
     return r_mask * l_disp + l_mask * r_disp + (1.0 - l_mask - r_mask) * m_disp
 
 
-def evaluate(opt, out_dir):
+def evaluate(opt, split, out_dir):
     """Evaluates a pretrained model using a specified test set
     """
     #MIN_DEPTH = 1e-3
@@ -75,9 +75,9 @@ def evaluate(opt, out_dir):
             "Cannot find a folder at {}".format(opt.load_weights_folder)
 
         print("-> Loading weights from {}".format(opt.load_weights_folder))
-
         #filenames = readlines(os.path.join(splits_dir, opt.eval_split, "test_files.txt"))
-        filenames = readlines(os.path.join(splits_dir, opt.eval_split, "val_files.txt"))
+        train_or_val = {"train": "train_files.txt", "val": "val_files.txt"}    
+        filenames = readlines(os.path.join(splits_dir, opt.eval_split, train_or_val[split]))
         encoder_path = os.path.join(opt.load_weights_folder, "encoder.pth")
         decoder_path = os.path.join(opt.load_weights_folder, "depth.pth")
 
@@ -235,7 +235,7 @@ def evaluate(opt, out_dir):
     print(("&{: 8.3f}  " * 7).format(*mean_errors.tolist()) + "\\\\")
     print("\n-> Done!")
     metrics = ["abs_rel", "sq_rel", "rmse", "rmse_log", "a1", "a2", "a3"]
-    with open(os.path.join(out_dir, os.path.basename(opts.load_weights_folder)) + ".txt", 'w') as f:
+    with open(os.path.join(out_dir, split, os.path.basename(opts.load_weights_folder)) + ".txt", 'w') as f:
         errors = mean_errors.tolist()
         for metric_idx, metric in enumerate(metrics):
             f.write(f"{metric}: {errors[metric_idx]:.5f}\n")
@@ -245,18 +245,20 @@ def evaluate(opt, out_dir):
 
 
 if __name__ == "__main__":
-    dir_model_weights = "/home/alan/workspace/mestrado/monodepth2_results/carla_1024x320_no_nights/models"
-    out_dir = "/home/alan/workspace/mestrado/monodepth2_results/carla_1024x320_no_nights/metrics"
+    dir_model_weights = "/home/alan/workspace/mestrado/monodepth2_results/waymo_1024x320/models"
+    out_dir = "/home/alan/workspace/mestrado/monodepth2_results/waymo_1024x320/metrics"
     options = MonodepthOptions()
     opts = options.parse()
     opts.eval_mono = True
-    opts.eval_split = "carla_1024x320"
-    opts.data_path = "/home/alan/workspace/mestrado/dataset/CARLA_1024x320"
+    opts.eval_split = "waymo_1024x320"  # Testing on complete carla 
+    opts.data_path = "/home/alan/workspace/mestrado/dataset/WAYMO_1024x320"
     #opts.load_weights_folder = "/media/aissrtx2060/Naotop_1TB1/monodepth2_data/carla_1024x320_full/carla_1024x320/models/weights_9"
     opts.max_depth = 75.0
     opts.min_depth = 0.1
+    splits = ['train', 'val']
 
-    model_paths = [os.path.join(dir_model_weights, model) for model in os.listdir(dir_model_weights)]
+    model_paths = [os.path.join(dir_model_weights, model) for model in os.listdir(dir_model_weights) if os.path.isdir(os.path.join(dir_model_weights, model))]
     for model_path in model_paths:
         opts.load_weights_folder = model_path
-        evaluate(opts, out_dir)
+        for split in splits:
+            evaluate(opts, split, out_dir)
