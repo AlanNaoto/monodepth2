@@ -34,7 +34,7 @@ class WaymoDataset(MonoDataset):
         frame_idx = int(folder)
         frame_idx = frame_idx + frame_index  # Gets the previous, current or next frame for comparison
         lidar_file = f'{frame_idx:05d}.npy'
-        lidar_path = os.path.join(self.data_path, 'anns_lidar_npy', lidar_file)
+        lidar_path = os.path.join(self.data_path, 'depth_npy', lidar_file)
         lidar_data = np.load(lidar_path)
 
         # Transform data from LIDAR standard to our img-like array standard
