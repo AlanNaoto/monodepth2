@@ -125,9 +125,9 @@ def test_simple(args):
             # TODO Check the bellow variable!
             name_dest_npy = os.path.join(output_directory, "{}_disp.npy".format(output_name))
             min_depth = 0.1
-            max_depth = 80.0
+            max_depth = 75.0
             scaled_disp, _ = disp_to_depth(disp, min_depth, max_depth)
-            np.save(name_dest_npy, scaled_disp.cpu().numpy())
+            #np.save(name_dest_npy, scaled_disp.cpu().numpy())
 
             # Saving colormapped depth image
             disp_resized_np = disp_resized.squeeze().cpu().numpy()

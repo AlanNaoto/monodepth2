@@ -214,17 +214,17 @@ def evaluate(opt, split, dataset, tmp_dir_root, out_dir):
 
 
 if __name__ == "__main__":
-    dir_model_weights = "/home/alan/workspace/mestrado/monodepth2_results/waymo_1024x320/models"
-    out_dir = "/home/alan/workspace/mestrado/monodepth2_results/waymo_1024x320/metrics"
+    dir_model_weights = "/home/alan/workspace/mestrado/monodepth2_results/carla_1024x320_no_nights/models"
+    out_dir = "/home/alan/workspace/mestrado/monodepth2_results/carla_1024x320_no_nights/metrics"
     options = MonodepthOptions()
     opts = options.parse()
     opts.eval_mono = True    
-    opts.eval_split = "waymo_1024x320"  # Testing on complete carla 
-    opts.data_path = "/home/alan/workspace/mestrado/dataset/WAYMO_1024x320"
+    opts.eval_split = "carla_1024x320"  # carla_1024x320 or waymo_1024x320
+    opts.data_path = "/home/alan/workspace/mestrado/dataset/CARLA_1024x320"
     #opts.load_weights_folder = "/media/aissrtx2060/Naotop_1TB1/monodepth2_data/carla_1024x320_full/carla_1024x320/models/weights_9"
     opts.max_depth = 75.0
     opts.min_depth = 0.1
-    dataset = 'waymo'
+    dataset = 'carla'
     tmp_dir_root = "/home/alan/workspace/mestrado/temp"
     splits = ['train', 'val']
 

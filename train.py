@@ -17,8 +17,8 @@ opts.load_weights_folder = None  # If not to load weights, assign None
 opts.data_path = "/home/alan/workspace/mestrado/dataset/WAYMO_1024x320"  # Path to dataset dir with imgs and annotations
 opts.eval_out_dir = "evaluations"
 opts.model_name = "waymo_1024x320"
-opts.split = "waymo_1024x320"
-opts.log_dir = "/home/alan/workspace/mestrado/monodepth2_results"  # Path where the weights and general logging will be saved (no need to put model name)
+opts.split = "waymo_1024x320_no_nights"
+opts.log_dir = "/home/alan/workspace/mestrado/monodepth2_results/waymo_1024x320_no_nights"  # Path where the weights and general logging will be saved (no need to put model name)
 opts.png = False
 
 # Network general settings
