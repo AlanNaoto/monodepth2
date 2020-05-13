@@ -114,7 +114,8 @@ class Trainer:
         datasets_dict = {"kitti": datasets.KITTIRAWDataset,
                          "kitti_odom": datasets.KITTIOdomDataset,
                          "carla": datasets.CarlaDataset,
-                         "waymo": datasets.WaymoDataset}
+                         "waymo": datasets.WaymoDataset,
+                         "mixed": datasets.MixedDataset}
         self.dataset = datasets_dict[self.opt.dataset]
 
         fpath = os.path.join(os.path.dirname(__file__), "splits", self.opt.split, "{}_files.txt")

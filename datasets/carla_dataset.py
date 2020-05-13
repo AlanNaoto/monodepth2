@@ -21,9 +21,9 @@ class CarlaDataset(MonoDataset):
         self.full_res_shape = (img_width, img_height)
 
     def check_depth(self):
-        return False # don't have it on this computer
+        return True
 
-    def get_image_path(self, folder, frame_index, side):        
+    def get_image_path(self, folder, frame_index, side):
         img_idx = int(folder)
         img_idx = img_idx + frame_index  # Gets the previous, current or next frame for comparison
         img_file = f'{img_idx:05d}.jpg'

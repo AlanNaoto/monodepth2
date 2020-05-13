@@ -214,17 +214,17 @@ def evaluate(opt, split, dataset, tmp_dir_root, out_dir):
 
 
 if __name__ == "__main__":
-    dir_model_weights = "/home/alan/workspace/mestrado/monodepth2_results/carla_1024x320_no_nights/models"
-    out_dir = "/home/alan/workspace/mestrado/monodepth2_results/carla_1024x320_no_nights/metrics"
+    dir_model_weights = "/home/alan/workspace/mestrado/monodepth2_results/carla_1024x320_town_holdout_kitti_pretrained/models"
+    out_dir = "/home/alan/workspace/mestrado/master_results/monocular_depth_estimation/monodepth2/carla_1024x320_town_holdout_kitti_pretrained"
     options = MonodepthOptions()
     opts = options.parse()
-    opts.eval_mono = True    
-    opts.eval_split = "carla_1024x320"  # carla_1024x320 or waymo_1024x320
-    opts.data_path = "/home/alan/workspace/mestrado/dataset/CARLA_1024x320"
-    #opts.load_weights_folder = "/media/aissrtx2060/Naotop_1TB1/monodepth2_data/carla_1024x320_full/carla_1024x320/models/weights_9"
+    opts.eval_mono = True
+    opts.eval_split = "carla_1024x320"  # carla_1024x320 or waymo_1024x320 (I don't want evaluation on "no nights", only on normal)
+    opts.data_path = "/home/alan/workspace/mestrado/dataset/CARLA_1024x320"  # CARLA_1024x320 or WAYMO_1024x320
+    #opts.load_weights_folder = "/media/aissrtx2060/Naotop_1TB1/monodepth2_data/carla_1024x320_full/carla_1024x320/models/weights_9"  # I am evaluating now all models, not just one
     opts.max_depth = 75.0
     opts.min_depth = 0.1
-    dataset = 'carla'
+    dataset = 'carla'  # carla or waymo? maybe this was wrong before?
     tmp_dir_root = "/home/alan/workspace/mestrado/temp"
     splits = ['train', 'val']
 
