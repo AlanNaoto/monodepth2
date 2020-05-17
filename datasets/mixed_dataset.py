@@ -2,6 +2,7 @@ import numpy as np
 import PIL.Image as pil
 import os
 import pdb
+import cv2
 
 from .mono_dataset import MonoDataset
 
@@ -48,14 +49,13 @@ class MixedDataset(MonoDataset):
         img_idx = img_idx + frame_index  # Gets the previous, current or next frame for comparison
         depth_file = f'{img_idx:05d}.npy'
         depth_path = os.path.join(self.data_path, dataset, 'depth_npy', depth_file)
-
         if dataset == "CARLA_1024x320":
             depth_gt = np.load(depth_path)
-            depth_gt = np.transpose(depth_gt)
+            #depth_gt = np.transpose(depth_gt)
         elif dataset == "WAYMO_1024x320":
             # Transform data from LIDAR standard to our img-like array standard
             depth_gt = np.zeros((1280, 1920))  # Original resolution (height, width)
-            lidar_data = depth_file
+            lidar_data = np.load(depth_path)
             for lidar_point in lidar_data:
                 depth_gt[int(lidar_point[1])][int(lidar_point[0])] = lidar_point[2]
             # Since we are resizing the GT, then its a very raw approximation
@@ -63,7 +63,6 @@ class MixedDataset(MonoDataset):
 
         if do_flip:
             depth_gt = np.fliplr(depth_gt)
-
         return depth_gt
 
     def get_color(self, folder, frame_index, side, do_flip):
