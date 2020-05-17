@@ -13,14 +13,14 @@ options = MonodepthOptions()
 opts = options.parse()
 
 opts.weights_init = "scratch"  # For me, it is always from scratch (pretrained loads other weights from the repo)
-opts.load_weights_folder = "../monodepth2_results/carla_1024x320_town_holdout_kitti_pretrained/models/weights_5"  # "pretrained_models/mono_1024x320"  # If not to load weights, assign None
-opts.data_path = "/home/alan/workspace/mestrado/dataset/CARLA_1024x320"  # Path to root dataset dir containing CARLA and WAYMO for mixed. For unique, to its specific root dir
+opts.load_weights_folder = "pretrained_models/mono_1024x320"  # If not to load weights, assign None
+opts.data_path = "/home/alan/workspace/mestrado/dataset"  # Path to root dataset dir containing CARLA and WAYMO for mixed. For unique, to its specific root dir
 opts.eval_out_dir = "evaluations"
-opts.model_name = "waymo_1024x320_town_holdout_carla_kitti_pretrained"  # "mixed_1024x320_town_holdout"
-opts.split = "waymo_1024x320" # "mixed_1024x320"  # or _no_nights
+opts.model_name = "mixed_waymo_carla_town_holdout_kitti_pretrained"  # "mixed_1024x320_town_holdout"
+opts.split = "mixed_1024x320" # "mixed_1024x320", carla_1024x320, waymo_1024x320  with/without _no_nights
 opts.log_dir = "/home/alan/workspace/mestrado/monodepth2_results"  # Path where the weights and general logging will be saved (no need to put model name)
 opts.png = False
-opts.dataset='waymo'  # waymo or carla
+opts.dataset='mixed'  # waymo, carla or mixed
 
 # Network general settings
 opts.width = 1024
