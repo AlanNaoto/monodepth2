@@ -55,6 +55,7 @@ class MixedDataset(MonoDataset):
         elif dataset == "WAYMO_1024x320":
             # Transform data from LIDAR standard to our img-like array standard
             depth_gt = np.zeros((1280, 1920))  # Original resolution (height, width)
+            lidar_data = depth_file
             for lidar_point in lidar_data:
                 depth_gt[int(lidar_point[1])][int(lidar_point[0])] = lidar_point[2]
             # Since we are resizing the GT, then its a very raw approximation
