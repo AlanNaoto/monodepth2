@@ -26,8 +26,9 @@ class MixedDataset(MonoDataset):
         I've indexed the files sequentially, starting from carla (1-19499, and then waymo 19500->end)
         Therefore according to img_idx I can set the right directory to get the files
         """
-        dataset = "CARLA_1024x320"
-        if (img_idx - 19500) >= 1:  # img_idx can't be zero, or img index will try to get non-existant previous frame -1
+        if 1 <= img_idx <= 19498:
+            dataset = "CARLA_1024x320"
+        elif img_idx >= 19501:  # img_idx can't be zero, or img index will try to get non-existant previous frame -1
             img_idx = img_idx - 19500
             dataset = "WAYMO_1024x320"
         return dataset, img_idx
