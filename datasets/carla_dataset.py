@@ -36,7 +36,7 @@ class CarlaDataset(MonoDataset):
         depth_file = f'{frame_idx:05d}.npy'
         depth_path = os.path.join(self.data_path, 'depth_npy', depth_file)
         depth_gt = np.load(depth_path)
-        depth_gt = np.transpose(depth_gt)
+        #depth_gt = np.transpose(depth_gt)
         if do_flip:
             depth_gt = np.fliplr(depth_gt)
         return depth_gt
