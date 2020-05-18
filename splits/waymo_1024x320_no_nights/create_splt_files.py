@@ -14,8 +14,8 @@ def create_files_txt(imgs_dir, train_split, img_ext, metadata_db_file):
     filtered_img_files = []
     files = sorted(os.listdir(imgs_dir))
     for frame_idx in range(len(files)):
-        # Skipping start (idx 4), end (idx 5) frames and night frames
-        if db_data[frame_idx][4] != 1 and db_data[frame_idx][5] != 1 and db_data[frame_idx][1] != "Night":
+        # Skipping start (idx 5), end (idx 6) frames and night frames
+        if db_data[frame_idx][5] != 1 and db_data[frame_idx][6] != 1 and db_data[frame_idx][2] != "Night":
             filtered_img_files.append(files[frame_idx])
     conn.close()
 
@@ -42,7 +42,7 @@ if __name__ == "__main__":
     # Input
     imgs_dir = "/home/alan/workspace/mestrado/dataset/WAYMO_1024x320/imgs_jpg"
     img_ext = ".jpg"
-    metadata_db_file = "/home/alan/workspace/mestrado/dataset/WAYMO_1024x320/annotation_metadata.db"
+    metadata_db_file = "/home/alan/workspace/mestrado/dataset/WAYMO_1024x320/translation_metadata.db"
     train_split = 0.80
 
     create_files_txt(imgs_dir, train_split, img_ext, metadata_db_file)

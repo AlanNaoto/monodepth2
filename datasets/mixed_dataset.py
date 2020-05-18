@@ -28,7 +28,7 @@ class MixedDataset(MonoDataset):
         """
         if 1 <= img_idx <= 19498:
             dataset = "CARLA_1024x320"
-        elif img_idx >= 19501:  # img_idx can't be zero, or img index will try to get non-existant previous frame -1
+        elif img_idx >= 19501:  # kinda cheating, I know that 19499 and 19500 will not appear on the splits file
             img_idx = img_idx - 19500
             dataset = "WAYMO_1024x320"
         return dataset, img_idx

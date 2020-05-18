@@ -7,7 +7,7 @@ def create_files_txt(imgs_dir, train_split, img_ext):
     # Each sequence ends after 60 frames. Therefore, I have to remove each frame multiple of number 0 and 60, since they don't have previous AND posterior frames
     filtered_img_files = []
     for img_idx in range(len(files)):
-        if img_idx % 60 != 0:
+        if ((img_idx+1) % 60 != 0) and ((img_idx%60) != 0):
             filtered_img_files.append(files[img_idx])
         
     train_amount = int(len(filtered_img_files)*train_split)

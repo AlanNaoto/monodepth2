@@ -4,7 +4,7 @@ import sqlite3
 
 
 def get_waymo_frames(imgs_dir, metadata_db_file):
-        # Initialize db file with information on frame end/finish (has other stuff as well)
+    # Initialize db file with information on frame end/finish (has other stuff as well)
     conn = sqlite3.connect(metadata_db_file)
     c = conn.cursor()
     c.execute('''SELECT * FROM waymo_metadata''')
@@ -14,8 +14,8 @@ def get_waymo_frames(imgs_dir, metadata_db_file):
     filtered_img_files = []
     files = sorted(os.listdir(imgs_dir))
     for frame_idx in range(len(files)):
-        # Skipping start (idx 4) and end (idx 5) frames
-        if db_data[frame_idx][4] != 1 and db_data[frame_idx][5] != 1:
+        # Skipping start (idx 5) and end (idx 6) frames
+        if db_data[frame_idx][5] != 1 and db_data[frame_idx][6] != 1:
             filtered_img_files.append(files[frame_idx])
     conn.close()
     return filtered_img_files
@@ -26,7 +26,7 @@ def get_carla_frames(imgs_dir):
     # Each sequence ends after 60 frames. Therefore, I have to remove each frame multiple of number 0 and 60, since they don't have previous AND posterior frames
     filtered_img_files = []
     for img_idx in range(len(files)):
-        if img_idx % 60 != 0:
+        if ((img_idx+1) % 60 != 0) and ((img_idx%60) != 0):
             filtered_img_files.append(files[img_idx])
     return filtered_img_files
 
@@ -51,12 +51,12 @@ def create_files_txt(carla_imgs_dir, waymo_imgs_dir, waymo_metadata_db_file, \
     carla_frames = get_carla_frames(carla_imgs_dir)
     print(carla_frames[0], carla_frames[-1])
     print(waymo_frames[0], waymo_frames[-1])
-    waymo_idx_offset = 19499
+    waymo_idx_offset = len(os.listdir(carla_imgs_dir))
     for frame_idx in range(len(waymo_frames)):
         waymo_frames[frame_idx] = int(waymo_frames[frame_idx].replace(".jpg", ""))
         waymo_frames[frame_idx] += waymo_idx_offset
         waymo_frames[frame_idx] = f"{waymo_frames[frame_idx]:05d}.jpg"
-    
+
     waymo_train_files, waymo_val_files = split_train_val(waymo_frames)
     carla_train_files, carla_val_files = split_train_val(carla_frames)
     train_files = waymo_train_files + carla_train_files
@@ -78,7 +78,7 @@ def create_files_txt(carla_imgs_dir, waymo_imgs_dir, waymo_metadata_db_file, \
 if __name__ == "__main__":
     # Input
     waymo_imgs_dir = "/home/alan/workspace/mestrado/dataset/WAYMO_1024x320/imgs_jpg"
-    waymo_metadata_db_file = "/home/alan/workspace/mestrado/dataset/WAYMO_1024x320/annotation_metadata.db"
+    waymo_metadata_db_file = "/home/alan/workspace/mestrado/dataset/WAYMO_1024x320/translation_metadata.db"
     carla_imgs_dir = "/home/alan/workspace/mestrado/dataset/CARLA_1024x320/imgs_jpg"
     train_split = 0.80
     img_ext = ".jpg"
