@@ -49,6 +49,8 @@ def create_files_txt(carla_imgs_dir, waymo_imgs_dir, waymo_metadata_db_file, \
     """
     waymo_frames = get_waymo_frames(waymo_imgs_dir, waymo_metadata_db_file)
     carla_frames = get_carla_frames(carla_imgs_dir)
+    print(carla_frames[0], carla_frames[-1])
+    print(waymo_frames[0], waymo_frames[-1])
     waymo_idx_offset = 19499
     for frame_idx in range(len(waymo_frames)):
         waymo_frames[frame_idx] = int(waymo_frames[frame_idx].replace(".jpg", ""))

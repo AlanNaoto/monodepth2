@@ -27,7 +27,7 @@ class MixedDataset(MonoDataset):
         Therefore according to img_idx I can set the right directory to get the files
         """
         dataset = "CARLA_1024x320"
-        if (img_idx - 19500) >= 0:
+        if (img_idx - 19500) >= 1:  # img_idx can't be zero, or img index will try to get non-existant previous frame -1
             img_idx = img_idx - 19500
             dataset = "WAYMO_1024x320"
         return dataset, img_idx
