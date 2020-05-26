@@ -67,7 +67,7 @@ def get_pred_disps(opt, split, tmp_dir_path, out_dir):
 
         print("-> Loading weights from {}".format(opt.load_weights_folder))
         #filenames = readlines(os.path.join(splits_dir, opt.eval_split, "test_files.txt"))
-        train_or_val = {"train": "train_files.txt", "val": "val_files.txt"}    
+        train_or_val = {"train": "train_files.txt", "val": "val_files.txt"}
         filenames = sorted(readlines(os.path.join(splits_dir, opt.eval_split, train_or_val[split])))  # sorted facilitates our life
         encoder_path = os.path.join(opt.load_weights_folder, "encoder.pth")
         decoder_path = os.path.join(opt.load_weights_folder, "depth.pth")
@@ -100,7 +100,7 @@ def get_pred_disps(opt, split, tmp_dir_path, out_dir):
         with torch.no_grad():
             for frame_idx, data in enumerate(dataloader):
                 if frame_idx % 100 == 0:
-                    print(f"Creating disparity {frame_idx}/{len(dataloader)}")
+                    print(f"Creating disparity frame {frame_idx}/{len(dataloader)}")
 
                 input_color = data[("color", 0, 0)].cuda()
 
@@ -158,7 +158,7 @@ def evaluate(opt, split, dataset, tmp_dir_root, out_dir):
     ratios = []
     for i in range(len(split_filenames)):
         if i % 100 == 0:
-            print(f"Computing error {i}/{len(split_filenames)}")
+            print(f"Computing error frame {i}/{len(split_filenames)}")
 
         gt_filename = split_filenames[i] + ".npy"  # This is done since predict is a subset from gt
         if dataset == 'waymo':
@@ -173,7 +173,6 @@ def evaluate(opt, split, dataset, tmp_dir_root, out_dir):
         gt_height, gt_width = gt_depth.shape[:2]
         pred_disp = np.load(disparity_files[i])
         pred_disp = pred_disp[0]
-        #pred_disp = cv2.resize(pred_disp, (gt_width, gt_height))  # FIXME My GT is already the same shape as the predictions
         pred_depth = 1 / pred_disp
 
         mask = gt_depth > 0
@@ -214,8 +213,8 @@ def evaluate(opt, split, dataset, tmp_dir_root, out_dir):
 
 
 if __name__ == "__main__":
-    dir_model_weights = "/home/alan/workspace/mestrado/monodepth2_results/waymo_1024x320_town_holdout_carla_pretrained/models"
-    out_dir = "/home/alan/workspace/mestrado/masters_results/monocular_depth_estimation/monodepth2/waymo_1024x320_town_holdout_carla_pretrained"
+    dir_model_weights = "/home/alan/workspace/mestrado/monodepth2_results/waymo_carla_kitti_pretrained/models"
+    out_dir = "/home/alan/workspace/mestrado/masters_results/monocular_depth_estimation/monodepth2_v2/waymo_carla_kitti_pretrained"
     options = MonodepthOptions()
     opts = options.parse()
     opts.eval_mono = True
@@ -224,13 +223,15 @@ if __name__ == "__main__":
     #opts.load_weights_folder = "/media/aissrtx2060/Naotop_1TB1/monodepth2_data/carla_1024x320_full/carla_1024x320/models/weights_9"  # I am evaluating now all models, not just one
     opts.max_depth = 75.0
     opts.min_depth = 0.1
-    dataset = 'waymo'  # carla or waymo? maybe this was wrong before?
+    dataset = 'waymo'  # carla or waymo
     tmp_dir_root = "/home/alan/workspace/mestrado/temp"
     splits = ['train', 'val']
 
     model_paths = [os.path.join(dir_model_weights, model) for model in os.listdir(dir_model_weights) if os.path.isdir(os.path.join(dir_model_weights, model))]
+    print('evaluating models:', model_paths)
     for model_path in model_paths:
         opts.load_weights_folder = model_path
         for split in splits:
             os.makedirs(os.path.join(out_dir, split), exist_ok=True)
             evaluate(opts, split, dataset, tmp_dir_root, out_dir)
+
