@@ -57,7 +57,7 @@ def batch_post_process_disparity(l_disp, r_disp):
     return r_mask * l_disp + l_mask * r_disp + (1.0 - l_mask - r_mask) * m_disp
 
 
-def get_pred_disps(opt, split, tmp_dir_path, out_dir):
+def get_pred_disps(opt, split, dataset_choice, tmp_dir_path, out_dir):
     if opt.ext_disp_to_eval is None:
 
         opt.load_weights_folder = os.path.expanduser(opt.load_weights_folder)
@@ -73,10 +73,14 @@ def get_pred_disps(opt, split, tmp_dir_path, out_dir):
         decoder_path = os.path.join(opt.load_weights_folder, "depth.pth")
 
         encoder_dict = torch.load(encoder_path)
-
-        dataset = datasets.carla_dataset.CarlaDataset(opt.data_path, filenames,
-                                           encoder_dict['height'], encoder_dict['width'],
-                                           [0], 4, is_train=False)
+        datasets_dict = {"kitti": datasets.KITTIRAWDataset, "kitti_odom": datasets.KITTIOdomDataset,
+                         "carla": datasets.CarlaDataset, "waymo": datasets.WaymoDataset, "mixed": datasets.MixedDataset}
+        dataset = datasets_dict[dataset_choice](opt.data_path, filenames,
+                                                encoder_dict['height'], encoder_dict['width'],
+                                                [0], 4, is_train=False)
+#        dataset = datasets.carla_dataset.CarlaDataset(opt.data_path, filenames,
+#                                           encoder_dict['height'], encoder_dict['width'],
+#                                           [0], 4, is_train=False)
         dataloader = DataLoader(dataset, 1, shuffle=False, num_workers=opt.num_workers,
                                 pin_memory=True, drop_last=False)  # Changed batch from 16 to 1 (before was evaluating only total/16 it seems?)
 
@@ -144,7 +148,7 @@ def evaluate(opt, split, dataset, tmp_dir_root, out_dir):
 
     tmp = tempfile.TemporaryDirectory(dir=tmp_dir_root)
     tmp_dir_path = tmp.name
-    disparity_files, split_filenames = get_pred_disps(opt, split, tmp_dir_path, out_dir)
+    disparity_files, split_filenames = get_pred_disps(opt, split, dataset, tmp_dir_path, out_dir)
 
     #gt_path = os.path.join(splits_dir, opt.eval_split, "gt_depths.npz")
     # gt_depths = np.load(gt_path, fix_imports=True, encoding='latin1')["data"]
@@ -213,8 +217,8 @@ def evaluate(opt, split, dataset, tmp_dir_root, out_dir):
 
 
 if __name__ == "__main__":
-    dir_model_weights = "/home/alan/workspace/mestrado/monodepth2_results/waymo_carla_kitti_pretrained/models"
-    out_dir = "/home/alan/workspace/mestrado/masters_results/monocular_depth_estimation/monodepth2_v2/waymo_carla_kitti_pretrained"
+    dir_model_weights = "/home/alan/workspace/mestrado/monodepth2_results/mixed_waymo_carla/models"
+    out_dir = "/home/alan/workspace/mestrado/masters_results/monocular_depth_estimation/monodepth2_v2/mixed_waymo_carla"
     options = MonodepthOptions()
     opts = options.parse()
     opts.eval_mono = True
