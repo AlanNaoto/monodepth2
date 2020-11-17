@@ -127,7 +127,7 @@ def test_simple(args):
             min_depth = 0.1
             max_depth = 75.0
             scaled_disp, _ = disp_to_depth(disp, min_depth, max_depth)
-            #np.save(name_dest_npy, scaled_disp.cpu().numpy())
+            np.save(name_dest_npy, scaled_disp.cpu().numpy())
 
             # Saving colormapped depth image
             disp_resized_np = disp_resized.squeeze().cpu().numpy()

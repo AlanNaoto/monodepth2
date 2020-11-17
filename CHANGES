@@ -1,0 +1,40 @@
+17/11/2020 20:08:50
+Filename,Folder,Comparison result,Left Date,Right Date,Extension
+.git,,Folders are different,* 17/11/2020 19:57:55,  18/07/2020 21:20:43,
+.idea,,Right only: D:\Naoto\UFPR\Mestrado\9_Code\depth_estimation\monodepth2,  ,* 13/05/2020 15:44:27,
+.ipynb_checkpoints,,Right only: D:\Naoto\UFPR\Mestrado\9_Code\depth_estimation\monodepth2,  ,* 17/01/2020 14:01:53,
+.vscode,,Right only: D:\Naoto\UFPR\Mestrado\9_Code\depth_estimation\monodepth2,  ,* 03/03/2020 14:40:02,
+__pycache__,,Right only: D:\Naoto\UFPR\Mestrado\9_Code\depth_estimation\monodepth2,  ,* 03/03/2020 17:42:15,
+assets,,Folders are different,* 17/11/2020 19:57:55,  14/10/2019 11:45:32,
+datasets,,Folders are different,* 17/11/2020 19:57:55,  19/05/2020 15:39:51,
+experiments,,Folders are different,* 17/11/2020 19:57:55,  14/10/2019 11:45:32,
+log,,Right only: D:\Naoto\UFPR\Mestrado\9_Code\depth_estimation\monodepth2,  ,* 07/02/2020 17:03:55,
+models,,Right only: D:\Naoto\UFPR\Mestrado\9_Code\depth_estimation\monodepth2,  ,* 17/01/2020 14:06:36,
+networks,,Folders are different,* 17/11/2020 19:57:55,  17/01/2020 14:06:36,
+splits,,Folders are different,* 17/11/2020 19:57:55,  13/05/2020 15:44:27,
+weights,,Right only: D:\Naoto\UFPR\Mestrado\9_Code\depth_estimation\monodepth2,  ,* 12/11/2020 18:59:47,
+.gitignore,,Text files are different,* 17/11/2020 19:57:55,  13/05/2020 15:44:27,gitignore
+.goutputstream-0T0KE0,,Right only: D:\Naoto\UFPR\Mestrado\9_Code\depth_estimation\monodepth2,  ,* 22/01/2020 10:07:41,goutputstream-0T0KE0
+.goutputstream-GRFME0,,Right only: D:\Naoto\UFPR\Mestrado\9_Code\depth_estimation\monodepth2,  ,* 22/01/2020 10:08:12,goutputstream-GRFME0
+.goutputstream-KHJPE0,,Right only: D:\Naoto\UFPR\Mestrado\9_Code\depth_estimation\monodepth2,  ,* 22/01/2020 10:07:57,goutputstream-KHJPE0
+.goutputstream-YFHNE0,,Right only: D:\Naoto\UFPR\Mestrado\9_Code\depth_estimation\monodepth2,  ,* 22/01/2020 10:08:38,goutputstream-YFHNE0
+carlacrop_visualized.jpg,,Right only: D:\Naoto\UFPR\Mestrado\9_Code\depth_estimation\monodepth2,  ,* 03/03/2020 17:40:34,jpg
+CHANGES,,Right only: D:\Naoto\UFPR\Mestrado\9_Code\depth_estimation\monodepth2,  ,* 17/11/2020 19:53:07,
+depth_prediction_example.ipynb,,Text files are different,* 17/11/2020 19:57:55,  03/03/2020 14:40:02,ipynb
+eigencrop_visualized.jpg,,Right only: D:\Naoto\UFPR\Mestrado\9_Code\depth_estimation\monodepth2,  ,* 03/03/2020 17:40:30,jpg
+evaluate_depth.py,,Text files are different,* 17/11/2020 19:57:55,  05/03/2020 16:50:42,py
+evaluate_depth_all_models.py,,Right only: D:\Naoto\UFPR\Mestrado\9_Code\depth_estimation\monodepth2,  ,* 13/05/2020 15:44:27,py
+evaluate_depth_all_models_less_memory.py,,Right only: D:\Naoto\UFPR\Mestrado\9_Code\depth_estimation\monodepth2,  ,* 18/07/2020 21:20:43,py
+evaluate_pose.py,,Text files are different,* 17/11/2020 19:57:55,  14/10/2019 11:45:32,py
+export_gt_depth.py,,Text files are different,* 17/11/2020 19:57:55,  14/10/2019 11:45:32,py
+kitti_utils.py,,Text files are different,* 17/11/2020 19:57:55,  14/10/2019 11:45:32,py
+layers.py,,Text files are different,* 17/11/2020 19:57:55,  14/10/2019 11:45:32,py
+LICENSE,,Text files are different,* 17/11/2020 19:57:55,  14/10/2019 11:45:32,
+options.py,,Text files are different,* 17/11/2020 19:57:55,  03/03/2020 14:40:02,py
+perform_inference.py,,Right only: D:\Naoto\UFPR\Mestrado\9_Code\depth_estimation\monodepth2,  ,* 18/07/2020 21:30:50,py
+README.md,,Text files are different,* 17/11/2020 19:57:55,  03/03/2020 14:40:02,md
+see_eigen_crop.py,,Right only: D:\Naoto\UFPR\Mestrado\9_Code\depth_estimation\monodepth2,  ,* 03/03/2020 17:41:25,py
+test_simple.py,,Text files are different,* 17/11/2020 19:57:55,  03/03/2020 14:40:02,py
+train.py,,Text files are different,* 17/11/2020 19:57:55,  18/07/2020 21:20:43,py
+trainer.py,,Text files are different,* 17/11/2020 19:57:55,  13/05/2020 15:44:27,py
+utils.py,,Text files are different,* 17/11/2020 19:57:55,  14/10/2019 11:45:32,py
